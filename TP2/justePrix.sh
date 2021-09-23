@@ -5,7 +5,7 @@ findIt=0
 
 while [ "$findIt" -ne 1 ]
 do
-    read -s "Entre un nombre : " SAISI
+    read -p "Entre un nombre : " SAISI
 
     if [ "$SAISI" -gt "$nombre" ]; then
         echo "Plus petit"
