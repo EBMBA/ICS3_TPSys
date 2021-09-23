@@ -102,6 +102,9 @@ Resultat cf Ex3.png
 ## Exercice 6. Le juste prix
  Écrivez un script qui génère un nombre aléatoire entre 1 et 1000 et demande à l’utilisateur de le deviner. Le programme écrira ”C’est plus !”, ”C’est moins !” ou ”Gagné !” selon les cas (vous utiliserez $RANDOM). 
 
-## Exercice 7. Statistiques 1. 
-
-Écrivez un script qui prend en paramètres trois entiers (entre -100 et +100) et affiche le min, le max et la moyenne. Vous pouvez réutiliser la fonction de l’exercice 3 pour vous assurer que les paramètres sont bien des entiers. 2. Généralisez le programme à un nombre quelconque de paramètres (pensez à SHIFT) 3. Modifiez votre programme pour que les notes ne soient plus données en paramètres, mais saisies et stockées au fur et à mesure dans un tableau. Exercice 8. Pour les plus rapides Écrivez un script qui affiche les combinaisons possibles de couleurs (cf. TP 1) :
+## Exercice 7. Statistiques 
+1. Écrivez un script qui prend en paramètres trois entiers (entre -100 et +100) et affiche le min, le max et la moyenne. Vous pouvez réutiliser la fonction de l’exercice 3 pour vous assurer que les paramètres sont bien des entiers. 
+2. Généralisez le programme à un nombre quelconque de paramètres (pensez à SHIFT) 
+3. Modifiez votre programme pour que les notes ne soient plus données en paramètres, mais saisies et stockées au fur et à mesure dans un tableau. 
+## Exercice 8. 
+Pour les plus rapides Écrivez un script qui affiche les combinaisons possibles de couleurs (cf. TP 1) 
