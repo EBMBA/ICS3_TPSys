@@ -5,13 +5,15 @@ findIt=0
 
 while [ $findIt -ne 1 ]
 do
-    read -s 'Entre un nombre ' SAISI
+    read -s "Entre un nombre : " SAISI
 
     if [ $SAISI -gt $nombre ]; then
         echo "Plus petit"
-    elif [ $SAISI -lt $nombre ]; then
+    fi
+    if [ $SAISI -lt $nombre ]; then
         echo "Plus grand"
-    else
+    fi
+    if [ $SAISI -eq $nombre ]; then
         echo "Bravo !"
         findIt=1
     fi
