@@ -87,4 +87,38 @@ Ensuite faire : <br>
 ## Exercice 3.
 **Ecrire une commande qui aﬀiche “INSTALLÉ” ou “NON INSTALLÉ” selon le nom et le statut du package spécifié dans cette commande.**
 
+Commande : <br>
+```bash
+dpkg -l "coreutils" | grep "^ii" > /dev/null && echo "installé" || echo "non installé"
+```
+Script : <br>
+```bash
+#!/bin/bash
+#!/bin/bash
+while (("$#")) 
+do
+    (dpkg -l "$1" | grep "^ii") 1>/dev/null 2>&1 && echo "$1 installé" || echo "$1 non installé"
+    shift
+done
+```
+***Exemple :  isinstall coreutil coreutils***<br>
+***coreutil non installé***<br>
+***coreutils installé***<br>
 
+Ensuite faire : <br>
+`echo alias isinstall='"bash ~/scripts/ICS3_TPSys/TP3/isinstall.sh"' >> ~/.bashrc && source ~/.bashrc`
+<br>
+
+## Exercice 4.
+**Lister les programmes livrés avec coreutils. En particulier, on remarque que l’un deux se nomme [. De
+quoi s’agit-il?**
+
+```bash
+ apt show coreutils
+ ```
+ <br>
+ [ est le meme que le programme "test".
+
+## Exercice 5. aptitude
+**Installez les paquets emacs et lynx à l’aide de la version graphique d’aptitude (et prenez deux minutes
+pour vous renseigner et tester ces paquets).**
