@@ -1,0 +1,29 @@
+Origin: EBMBA/origine-commande
+Label: origine-commandeICS3EBMBA
+Suite: stable
+Codename: focal
+Date: Tue, 28 Sep 2021 09:43:40 UTC
+Architectures: i386 amd64
+Components: universe
+Description: Cherche_l_origine_d_une_commande
+MD5Sum:
+ c03bd6c4d4076b5c6d83e6c5f0a2604c 402 universe/binary-i386/Packages
+ da9a469572d6a46add7d90f02852c5e0 305 universe/binary-i386/Packages.gz
+ 2d8009a9528813f486321872baf45916 165 universe/binary-i386/Release
+ c03bd6c4d4076b5c6d83e6c5f0a2604c 402 universe/binary-amd64/Packages
+ da9a469572d6a46add7d90f02852c5e0 305 universe/binary-amd64/Packages.gz
+ f270a5db923be7d44908b4824a8dc110 166 universe/binary-amd64/Release
+SHA1:
+ 3d5b104b93f02ff8d832b0dcd4126f5ad82fd5e5 402 universe/binary-i386/Packages
+ 8540ce46b039ffdce32c8b99434239ed4fe2fc61 305 universe/binary-i386/Packages.gz
+ 0ee69e597b9a904a4f69fc927ed919159208f0cc 165 universe/binary-i386/Release
+ 3d5b104b93f02ff8d832b0dcd4126f5ad82fd5e5 402 universe/binary-amd64/Packages
+ 8540ce46b039ffdce32c8b99434239ed4fe2fc61 305 universe/binary-amd64/Packages.gz
+ 10ebafd681f4a54753a07ab98b2c4ef22ef4d20c 166 universe/binary-amd64/Release
+SHA256:
+ bf515f76a86e81a69b2eb0fa96dbe10b64852d1b95c340a11d5598e95bf61e1b 402 universe/binary-i386/Packages
+ d59de9576bff449acff95ea0a2c01533515fbbf681f56d4cab6ad8e21c12a176 305 universe/binary-i386/Packages.gz
+ 37da650f96af5b8a266cc1bdcd1eb3b6573711b3f0c03dd750ec50efaa62f9c1 165 universe/binary-i386/Release
+ bf515f76a86e81a69b2eb0fa96dbe10b64852d1b95c340a11d5598e95bf61e1b 402 universe/binary-amd64/Packages
+ d59de9576bff449acff95ea0a2c01533515fbbf681f56d4cab6ad8e21c12a176 305 universe/binary-amd64/Packages.gz
+ ef592f57cec972a2172dfd53a6cad7938c494e5ac88a1c8585571c283190aca9 166 universe/binary-amd64/Release

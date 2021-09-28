@@ -1,0 +1,13 @@
+Package: origine-commande
+Version:0.1
+Maintainer:Emile_METRAL
+Architecture:all
+Priority: optional
+Section: utils
+Filename: pool/universe/o/origine-commande/origine-commande_0.1_all.deb
+Size: 812
+SHA256: e293dd0d7af84a50697adf8c0aff0246cf4d7410220263cd9af5db31c45adc1c
+SHA1: 45a222ba337eafb51d883b6903c604f99423d0af
+MD5sum: 9dace8ae866f2249330cfd7ddb738c20
+Description:Cherche_l_origine_d_une_commande
+

@@ -1,0 +1,7 @@
+Package:origine-commande
+Version:0.1
+Maintainer:Emile_METRAL
+Architecture:all
+Description:Cherche_l_origine_d_une_commande
+Section:utils
+Priority:optional

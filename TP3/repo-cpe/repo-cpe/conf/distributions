@@ -1,0 +1,9 @@
+Origin:EBMBA/origine-commande
+Label:origine-commandeICS3EBMBA
+Suite:stable
+Codename:focal 
+Architectures: i386 amd64
+Components: universe
+Description:Cherche_l_origine_d_une_commande
+SignWith:yes
+
