@@ -55,7 +55,9 @@ Vérification :
 ```
 
 7. Créez deux répertoires /home/dev et /home/infra pour le contenu commun aux membres de chaque groupe, et mettez en place les permissions leur permettant d’écrire dans ces dossiers. 
-
+```bash 
+sudo mkdir -p /home/dev /home/infra ; sudo chgrp -R dev /home/dev; sudo chgrp -R infra /home/infra ; sudo chmod -R g+w /home/dev ; sudo chmod -R g+w /home/infra
+``` 
 8. Comment faire pour que, dans ces dossiers, seul le propriétaire d’un fichier ait le droit de renommer ou supprimer ce fichier?
 
 9. Pouvez-vous ouvrir une session en tant que alice ? Pourquoi?
