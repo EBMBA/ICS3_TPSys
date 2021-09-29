@@ -49,29 +49,56 @@ stat -c "User:%U Group:%G Directory:%N" /home/*
 
 ```bash
 sudo usermod alice -g dev; sudo usermod bob -g dev; sudo usermod charlie -g infra; sudo usermod dave -g infra
-
-Vérification : 
-
 ```
 
 7. Créez deux répertoires /home/dev et /home/infra pour le contenu commun aux membres de chaque groupe, et mettez en place les permissions leur permettant d’écrire dans ces dossiers. 
 ```bash 
 sudo mkdir -p /home/dev /home/infra ; sudo chgrp -R dev /home/dev; sudo chgrp -R infra /home/infra ; sudo chmod -R g+w /home/dev ; sudo chmod -R g+w /home/infra
+
+Vérification : 
+stat -c "Rights:%A User:%U Group:%G Directory:%N " /home/dev /home/infra
 ``` 
 8. Comment faire pour que, dans ces dossiers, seul le propriétaire d’un fichier ait le droit de renommer ou supprimer ce fichier?
+```bash 
+sudo chmod +t /home/dev
 
-9. Pouvez-vous ouvrir une session en tant que alice ? Pourquoi?
-
+Vérification : 
+stat -c "Rights:%A User:%U Group:%G Directory:%N " /home/dev 
+```
+9. Pouvez-vous ouvrir une session en tant que alice ? Pourquoi?<br>
+`Non parce qu'elle n'a pas de mot de passe elle n'est donc pas activé.`
+```bash 
+serveur@uservermetral:/home/dev$ su alice
+Password: 
+su: Authentication failure
+```
 10. Activez le compte de l’utilisateur alice et vérifiez que vous pouvez désormais vous connecter avec son compte.
-
+```bash
+serveur@uservermetral:/home/dev$ sudo passwd alice
+New password: 
+Retype new password:
+passwd: password updated successfully
+serveur@uservermetral:/home/dev$ su alice
+Password: 
+alice@uservermetral:/home/dev$ 
+```
 11. Comment obtenir l’uid et le gid de alice ?
-
+```bash 
+alice@uservermetral:/home/dev$ id
+uid=1002(alice) gid=1004(alice) groups=1004(alice),1001(dev)
+```
 12. Quelle commande permet de retrouver l’utilisateur dont l’uid est 1003 ?
-
+```bash 
+cat /etc/passwd | cut -d: -f1,3 | grep 1003
+```
 13. Quel est l’id du groupe dev ?
-
+```bash
+cat /etc/group | cut -d: -f1,3 | grep -w 'dev'
+```
 14. Quel groupe a pour gid 1002? ( *** /!\ *** Rien n’empêche d’avoir un groupe dont le nom serait 1002...)
-
+```bash 
+cat /etc/group | cut -d: -f1,3 | grep  ':1002'
+```
 15. Retirez l’utilisateur charlie du groupe infra. Que se passe-t-il? Expliquez.
 
 16. Modifiez le compte de dave de sorte que :
