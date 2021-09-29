@@ -1,5 +1,5 @@
 # TP 4 - Utilisateurs, groupes et permissions
-*** Emile METRAL ICS 3 ***
+***Emile METRAL ICS 3***
 
 ## Exercice 1. Gestion des utilisateurs et des groupes
 
@@ -33,6 +33,8 @@ cat /etc/group| grep -w 'dev\|infra'
 4. Donnez deux moyens d’aﬀicher les membres de `infra`
 ```bash
 cat /etc/group| grep -w 'infra' | cut -d: -f4
+OU 
+grep "infra" /etc/group | cut -d: -f4
 ```
 
 5. Faites de `dev` le groupe propriétaire des répertoires `/home/alice` et `/home/bob` et de `infra` le groupe propriétaire de `/home/charlie` et `/home/dave`
@@ -84,8 +86,7 @@ alice@uservermetral:/home/dev$
 ```
 11. Comment obtenir l’uid et le gid de alice ?
 ```bash 
-alice@uservermetral:/home/dev$ id
-uid=1002(alice) gid=1004(alice) groups=1004(alice),1001(dev)
+id -u alice
 ```
 12. Quelle commande permet de retrouver l’utilisateur dont l’uid est 1003 ?
 ```bash 
@@ -101,12 +102,21 @@ cat /etc/group | cut -d: -f1,3 | grep  ':1002'
 ```
 15. Retirez l’utilisateur charlie du groupe infra. Que se passe-t-il? Expliquez.
 
+```bash
+sudo gpasswd -d charlie infra
+
+id charlie ==> 
+uid=1003(charlie) gid=1005(charlie) groups=1005(charlie)
+
+Le groupe primaire de charlie a changé pour le groupe Charlie qui a été créé après la supression car un utilisateur ne peut pas être sans groupe. 
+```
+
 16. Modifiez le compte de dave de sorte que :
-— il expire au 1er juin 2021
-— il faut changer de mot de passe avant 90 jours
-— il faut attendre 5 jours pour modifier un mot de passe
-— l’utilisateur est averti 14 jours avant l’expiration de son mot de passe
-— le compte sera bloqué 30 jours après expiration du mot de passe
+- il expire au 1er juin 2021
+- il faut changer de mot de passe avant 90 jours
+- il faut attendre 5 jours pour modifier un mot de passe
+- l’utilisateur est averti 14 jours avant l’expiration de son mot de passe
+- le compte sera bloqué 30 jours après expiration du mot de passe
 
 17. Quel est l’interpréteur de commandes (Shell) de l’utilisateur root ?
 
