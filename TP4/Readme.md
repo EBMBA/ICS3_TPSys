@@ -327,11 +327,11 @@ chmod 570 fic
 ```bash
 which passwd | xargs /usr/bin/stat -c "Rights:%A  Directory:%N "
 >> Rights:-rwsr-xr-x  Directory:'/usr/bin/passwd'
-Le s indique que le programme passwd est execute avec les droits de son proprietaire. 
+Le 's' indique que le programme passwd est execute avec les droits de son proprietaire. 
 
 stat -c "Rights:%A  Directory:%N " /etc/passwd
 >> Rights:-rw-r--r--  Directory:'/etc/passwd' 
-On voit ici que seul le proprietaire du fichier peut modifier les informations dedans. On peut voir aue c'est le meme droit pour le fichier /etc/shadow :' 
+On voit ici que seul le proprietaire du fichier peut modifier les informations dedans. On peut voir que c'est les memes droits pour le fichier /etc/shadow :' 
 
 stat -c "Rights:%A  Directory:%N " /etc/shadow
 >> Rights:-rw-r-----  Directory:'/etc/shadow' 
