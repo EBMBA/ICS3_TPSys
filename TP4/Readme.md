@@ -319,7 +319,7 @@ chmod u-x,g+r,o+w fic
 ```
 - chmod u+x,g=w,o-r fic en sachant que les droits initiaux de fic sont r--r-x---
 ```bash 
-chmod 570 fic
+chmod 520 fic
 ```
 
 14.  Aﬀichez les droits sur le programme passwd. Que remarquez-vous? En aﬀichant les droits du fichier
