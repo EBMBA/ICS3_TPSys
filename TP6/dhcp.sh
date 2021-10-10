@@ -63,7 +63,7 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
 INTERFACESv4="ens33"
 INTERFACESv6=""
 ' | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server ) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
-
+sleep 10
 ( sudo ps -aux | cut -d: -f1 | grep -w "dhcpd" ) 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
 
 
