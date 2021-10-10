@@ -6,11 +6,11 @@ echo "Desactiver les services de cloud-init"
 
 # Changer le domaine de la machine
 echo "Changer le domaine de la machine"
-(sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
+( sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local ) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
 
 # Installation du serveur DHCP 
 echo "Installation du serveur DHCP"
-( ( sudo apt update && sudo apt upgrade -y ) 1>/dev/null 2>&1 && sudo apt install isc-dhcp-server -y) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
+( ( sudo apt update && sudo apt upgrade -y ) 1>/dev/null 2>&1 && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
 
 # Changement de la configuration reseau 
 echo " Changement de la configuration reseau"
@@ -28,9 +28,9 @@ network:
 
 # Configuration du serveur DHCP
 echo "Configuration du serveur DHCP"
-(sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.bak) 1>/dev/null 2>&1 && echo "Backup DHCP configuration is good" || echo "Error in the backup DHCP configuration"
+( sudo mv /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.bak ) 1>/dev/null 2>&1 && echo "Backup DHCP configuration is good" || echo "Error in the backup DHCP configuration"
 
-(echo '
+( echo '
 default-lease-time 120;
 max-lease-time 600;
 authoritative; 
@@ -41,9 +41,9 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
     option routers 192.168.100.1; 
     option domain-name-servers 192.168.100.1; 
 }
-' | sudo tee /etc/dhcp/dhcpd.conf) 1>/dev/null 2>&1 && echo "DHCP configuration is good" || echo "Error in the DHCP configuration"
+' | sudo tee /etc/dhcp/dhcpd.conf ) 1>/dev/null 2>&1 && echo "DHCP configuration is good" || echo "Error in the DHCP configuration"
 
-(echo '
+( echo '
 # Defaults for isc-dhcp-server (sourced by /etc/init.d/isc-dhcp-server)
 
 # Path to dhcpd s config file (default: /etc/dhcp/dhcpd.conf).
@@ -62,8 +62,8 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
 #       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
 INTERFACESv4="ens33"
 INTERFACESv6=""
-' | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
+' | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server ) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
 
-(sudo ps -aux | cut -d: -f1 | grep -w "dhcpd") 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
+( sudo ps -aux | cut -d: -f1 | grep -w "dhcpd" ) 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
 
 
