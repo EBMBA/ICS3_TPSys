@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Variable savoir is reboot 
-(ls ~/ | grep -w "ISReboot") 1>/dev/null 2>&1 || echo "0" > ~/ISReboot 
-
-
-if test -f ~/ISReboot
+if [ ! -f ~/ISReboot ]
 then
     # Desactiver les services de cloud-init
     echo "Desactiver les services de cloud-init"
@@ -16,6 +12,7 @@ then
 
     echo "0" > ~/ISReboot 
     echo "Reboot... run script dhcp after reboot"
+    sleep 5
     sudo reboot
 fi
 
