@@ -14,17 +14,20 @@ echo "Installation du serveur DHCP"
 
 # Changement de la configuration reseau 
 echo " Changement de la configuration reseau"
+VARINTERFACE1=$(ip a | grep -w 2 | cut -d: -f2)
+VARINTERFACE2=$(ip a | grep -w 3 | cut -d: -f2)
+VARNETCONF=$(ls /etc/netplan/)
 ( echo "
 network:
     ethernets:
-        ens32:
+        $VARINTERFACE1:
             dhcp4: true
-        ens33:
+        $VARINTERFACE2:
             addresses: 
             -   192.168.100.1/24
             gateway4: 192.168.100.1            
     version: 2
-" | sudo tee /etc/netplan/50-cloud-init.yaml && sudo netplan apply && sudo systemctl restart systemd-networkd ) 1>/dev/null 2>&1 && echo "Network configuration good" || echo "Error in the network configuration"
+" | sudo tee /etc/netplan/"$VARNETCONF" && sudo netplan apply && sudo systemctl restart systemd-networkd ) 1>/dev/null 2>&1 && echo "Network configuration good" || echo "Error in the network configuration"
 
 # Configuration du serveur DHCP
 echo "Configuration du serveur DHCP"
@@ -43,7 +46,7 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
 }
 ' | sudo tee /etc/dhcp/dhcpd.conf ) 1>/dev/null 2>&1 && echo "DHCP configuration is good" || echo "Error in the DHCP configuration"
 
-( echo '
+( echo "
 # Defaults for isc-dhcp-server (sourced by /etc/init.d/isc-dhcp-server)
 
 # Path to dhcpd s config file (default: /etc/dhcp/dhcpd.conf).
@@ -56,13 +59,13 @@ subnet 192.168.100.0 netmask 255.255.255.0 {
 
 # Additional options to start dhcpd with.
 #       Don t use options -cf or -pf here; use DHCPD_CONF/ DHCPD_PID instead
-#OPTIONS=""
+#OPTIONS=\"\"
 
 # On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
-#       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
-INTERFACESv4="ens33"
-INTERFACESv6=""
-' | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server ) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
+#       Separate multiple interfaces with spaces, e.g. \"eth0 eth1\".
+INTERFACESv4=\"$VARINTERFACE2\"
+INTERFACESv6=\"\"
+" | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server ) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
 sleep 10
 ( sudo ps -aux | cut -d: -f1 | grep -w "dhcpd" ) 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
 
