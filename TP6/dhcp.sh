@@ -15,13 +15,14 @@ then
     echo "Changer le domaine de la machine"
     ( sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local ) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
 
-    # Installation du serveur DHCP 
-    echo "Installation du serveur DHCP"
-    ( sudo apt update && sudo apt upgrade -y  && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
     ISREBOOT=1
 fi
 echo "Reboot... run script dhcp after reboot"
 sudo reboot
+
+ # Installation du serveur DHCP 
+echo "Installation du serveur DHCP"
+( sudo apt update && sudo apt upgrade -y  && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
 
 # Changement de la configuration reseau 
 echo " Changement de la configuration reseau"
