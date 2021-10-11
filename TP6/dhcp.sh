@@ -17,7 +17,7 @@ then
 fi
 
 
- # Installation du serveur DHCP 
+# Installation du serveur DHCP 
 echo "Installation du serveur DHCP"
 ( sudo apt update && sudo apt upgrade -y  && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
 
@@ -77,7 +77,5 @@ INTERFACESv6=\"\"
 " | sudo tee /etc/default/isc-dhcp-server && sudo dhcpd -t && sudo systemctl restart isc-dhcp-server ) 1>/dev/null 2>&1 && echo "DHCP Server listen configuration is good" || echo "Error in the DHCP Server listen configuration"
 sleep 10
 ( sudo ps -aux | cut -d: -f1 | grep -w "dhcpd" ) 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
-
-
 
 rm ~/ISReboot
