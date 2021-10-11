@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Variable savoir is reboot 
-export ISREBOOT=0
+(ls ~/ | grep -w "ISReboot") 1>/dev/null 2>&1 || echo "0" > ~/ISReboot 
+ISREBOOT=$(cat ~/ISReboot)
 
 
-if [ "$ISREBOOT" -eq 0 ] 
+if [ x$ISREBOOT = "x0" ] 
 then
     # Desactiver les services de cloud-init
     echo "Desactiver les services de cloud-init"
@@ -80,3 +81,5 @@ sleep 10
 ( sudo ps -aux | cut -d: -f1 | grep -w "dhcpd" ) 1>/dev/null 2>&1  && echo "DHCP Server is on" || echo "DHCP Server is off"
 
 
+
+rm ~/ISReboot
