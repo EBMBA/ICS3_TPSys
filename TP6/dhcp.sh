@@ -1,16 +1,24 @@
 #!/bin/bash
 
-# Desactiver les services de cloud-init 
-echo "Desactiver les services de cloud-init"
-( ( ( echo 'datasource_list: [ None ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg ) && sudo apt-get purge cloud-init -y ) && sudo rm -rf /etc/cloud/; sudo rm -rf /var/lib/cloud/ ) 1>/dev/null 2>&1 && echo "cloud-init removed" || echo "cloud-init not removed"
+# Variable savoir is reboot 
+export ISREBOOT=0
 
-# Changer le domaine de la machine
-echo "Changer le domaine de la machine"
-( sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local ) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
 
-# Installation du serveur DHCP 
-echo "Installation du serveur DHCP"
-( ( sudo apt update && sudo apt upgrade -y ) 1>/dev/null 2>&1 && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
+if [ "$ISREBOOT" -eq 0 ] 
+then
+    # Desactiver les services de cloud-init
+    echo "Desactiver les services de cloud-init"
+    ( ( ( echo 'datasource_list: [ None ]' | sudo -s tee /etc/cloud/cloud.cfg.d/90_dpkg.cfg ) && sudo apt-get purge cloud-init -y ) && sudo rm -rf /etc/cloud/; sudo rm -rf /var/lib/cloud/ ) 1>/dev/null 2>&1 && echo "cloud-init removed" || echo "cloud-init not removed"
+
+    # Changer le domaine de la machine
+    echo "Changer le domaine de la machine"
+    ( sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local ) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
+
+    # Installation du serveur DHCP 
+    echo "Installation du serveur DHCP"
+    ( sudo apt update && sudo apt upgrade -y  && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
+    ISREBOOT=1
+fi
 
 # Changement de la configuration reseau 
 echo " Changement de la configuration reseau"
