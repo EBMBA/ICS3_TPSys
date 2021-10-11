@@ -2,10 +2,9 @@
 
 # Variable savoir is reboot 
 (ls ~/ | grep -w "ISReboot") 1>/dev/null 2>&1 || echo "0" > ~/ISReboot 
-ISREBOOT=$(cat ~/ISReboot)
 
 
-if [ x$ISREBOOT = "x0" ] 
+if test -f ~/ISReboot
 then
     # Desactiver les services de cloud-init
     echo "Desactiver les services de cloud-init"
@@ -15,10 +14,11 @@ then
     echo "Changer le domaine de la machine"
     ( sudo hostnamectl set-hostname "$HOSTNAME".tpadmin.local ) 1>/dev/null 2>&1 && echo "Hostname changed to $HOSTNAME.tpadmin.local" || echo "Hostname not changed"
 
-    ISREBOOT=1
+    echo "0" > ~/ISReboot 
+    echo "Reboot... run script dhcp after reboot"
+    sudo reboot
 fi
-echo "Reboot... run script dhcp after reboot"
-sudo reboot
+
 
  # Installation du serveur DHCP 
 echo "Installation du serveur DHCP"
