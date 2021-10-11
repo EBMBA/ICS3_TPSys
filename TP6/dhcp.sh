@@ -19,6 +19,8 @@ then
     ( sudo apt update && sudo apt upgrade -y  && sudo apt install isc-dhcp-server -y ) 1>/dev/null 2>&1 && echo "isc-dhcp-server installed" || echo "isc-dhcp-server not installed"
     ISREBOOT=1
 fi
+echo "Reboot... run script dhcp after reboot"
+sudo reboot
 
 # Changement de la configuration reseau 
 echo " Changement de la configuration reseau"
