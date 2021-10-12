@@ -33,8 +33,7 @@ network:
             dhcp4: true
         $VARINTERFACE2:
             addresses: 
-            -   192.168.100.1/24
-            gateway4: 192.168.100.1            
+            -   192.168.100.1/24          
     version: 2
 " | sudo tee /etc/netplan/"$VARNETCONF" && sudo netplan apply && sudo systemctl restart systemd-networkd ) 1>/dev/null 2>&1 && echo "Network configuration good" || echo "Error in the network configuration"
 
