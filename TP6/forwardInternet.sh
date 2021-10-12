@@ -1,6 +1,4 @@
 #!/bin/bash
-# Installation de iptables-persistent pour sauvegarder la configuration 
-(sudo apt install iptables-persistent -y) 1>/dev/null 2>&1 && echo "iptables-persistent installed" || echo "iptables-persistent not installed"
 
 # Activation de IP Forwarding
 echo "Activation de l'IP Forwarding"
@@ -12,4 +10,7 @@ sudo sed -i -e 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.co
 #  Autoriser la traduction d’adresse source
 echo "Autoriser la traduction d’adresse source"
 VARINTERFACE1=$(ip a | grep -w 2 | cut -d: -f2)
-( sudo iptables --table nat --append POSTROUTING -s 192.168.100.0/24 -o $VARINTERFACE1 -j MASQUERADE && sudo /etc/init.d/iptables-persistent save && sudo /etc/init.d/iptables-persistent reload ) && echo "Masquerading enabled" || echo "Masquerading disabled"
+( sudo iptables --table nat --append POSTROUTING  --out-interface $VARINTERFACE1 -j MASQUERADE ) && echo "Masquerading enabled" || echo "Masquerading disabled"
+
+# Installation de iptables-persistent pour sauvegarder la configuration 
+(sudo apt install iptables-persistent -y) 1>/dev/null 2>&1 && echo "iptables-persistent installed" || echo "iptables-persistent not installed"
