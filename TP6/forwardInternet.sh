@@ -12,4 +12,4 @@ sudo sed -i -e 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.co
 #  Autoriser la traduction d’adresse source
 echo "Autoriser la traduction d’adresse source"
 VARINTERFACE1=$(ip a | grep -w 2 | cut -d: -f2)
-( sudo iptables --table nat --append POSTROUTING -s 192.168.100.0/24 -o $VARINTERFACE1 -j MASQUERADE && sudo iptables-persistent) && echo "Masquerading enabled" || echo "Masquerading disabled"
+( sudo iptables --table nat --append POSTROUTING -s 192.168.100.0/24 -o $VARINTERFACE1 -j MASQUERADE && sudo /etc/init.d/iptables-persistent save && sudo /etc/init.d/iptables-persistent reload ) && echo "Masquerading enabled" || echo "Masquerading disabled"
