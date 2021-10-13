@@ -3,18 +3,22 @@
 
 # Configuration de la zone tpadmin.local
 echo "Configuration de la zone tpadmin.local"
-( echo "zone \"tpadmin.local\" IN {
-type master; 
-file \"/etc/bind/db.tpadmin.local\"; 
+( echo "
+zone \"tpadmin.local\" IN {
+    type master; 
+    file \"/etc/bind/db.tpadmin.local\"; 
 };" | sudo tee -a /etc/bind/named.conf.local ) 1>/dev/null 2>&1 && echo "DNS configured for tpadmin.local" || echo "DNS configured for tpadmin.local"
 
 sudo cp  /etc/bind/db.local /etc/bind/db.tpadmin.local
 sudo sed -i -e 's/localhost/tpadmin.local/g'  /etc/bind/db.tpadmin.local
 sudo sed -i -e 's/127.0.0.1/192.168.100.1/g'  /etc/bind/db.tpadmin.local
+SERIALLINE=$(sudo sed -n "6 p" /etc/bind/db.tpadmin.local)
+sudo sed -i -e "s/$SERIALLINE/                         13102021       ; Serial/g"  /etc/bind/db.tpadmin.local
 
-echo "zone \"100.168.192.in-addr.arpa\" {
-type master;
-file \"/etc/bind/db.192.168.100\";
+echo "
+zone \"100.168.192.in-addr.arpa\" {
+    type master;
+    file \"/etc/bind/db.192.168.100\";
 };" | sudo tee -a /etc/bind/named.conf.local
 
 sudo cp /etc/bind/db.127 /etc/bind/db.192.168.100
@@ -22,6 +26,8 @@ sudo cp /etc/bind/db.127 /etc/bind/db.192.168.100
 sudo sed -i -e 's/localhost/tpadmin.local/g'  /etc/bind/db.192.168.100
 sudo sed -i -e 's/127.0.0.1/192.168.100.1/g' /etc/bind/db.192.168.100
 sudo sed -i -e 's/1.0.0/1./g' /etc/bind/db.192.168.100
+SERIALLINE=$(sudo sed -n "6 p" /etc/bind/db.192.168.100)
+sudo sed -i -e "s/$SERIALLINE/                         13102021       ; Serial/g"  /etc/bind/db.192.168.100
 
 named-checkconf /etc/bind/named.conf.local
 named-checkzone /etc/bind/tpadmin.local /etc/bind/db.tpadmin.local
