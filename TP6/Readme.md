@@ -2,6 +2,22 @@
 ***Emile METRAL ICS 3***<br>
 ***Ecrit avec un clavier en qwerty il se peut qu'il manque des accents***
 <br>
+### Exercice 1
+
+**Adressage IP**
+
+
+| Sous-réseau   | Nombre de machine | Adresse sous-réseau | Adresse broadcast | Adresse 1ère machine | Adresse dernière machine |
+| ------------- | -------------     | -------------       | -------------     | -------------        | ------------- |
+| 1             | 38                | 172.16.0.0          | 172.16.0.63       | 172.16.0.1           | 172.16.0.62   |
+| 2             | 33                | 172.16.0.64         | 172.16.0.127      | 172.16.0.65          | 172.16.0.126  |
+| 3             | 52                | 172.16.0.128        | 172.16.0.191      | 172.16.0.129         | 172.16.0.190  |
+| 4             | 35                | 172.16.0.192        | 172.16.0.255      | 172.16.0.193         | 172.16.0.254  |
+| 5             | 34                | 172.16.1.0          | 172.16.1.63       | 172.16.1.1           | 172.16.1.62   |
+| 6             | 37                | 172.16.1.64         | 172.16.1.127      | 172.16.1.65          | 172.16.1.126  |
+| 7             | 25                | 172.16.1.128        | 172.16.1.159      | 172.16.1.129         | 172.16.1.160  |
+
+<br>
 ## Exercice 3. Installation du serveur DHCP
 Scripts de configuration et'installation du serveur DHCP :
 ```bash

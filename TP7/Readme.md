@@ -153,59 +153,154 @@ install:
 install.
 ```bash 
 cd ~/kernelProject && make
-make install 
+sudo make install
 ```
 ***Le module est installé dans le dossier spécifié à la ligne 10.***
 
+
+5. Chargez le module; vérifiez dans le journal du noyau que le message “La fonction init_module() est appelée” a bien été inscrit, synonyme que le module a été chargé; confirmez avec la commande lsmod.
+
+```bash
+Sans dépendance :
+ sudo insmod /lib/modules/5.4.0-88-generic/kernel/drivers/misc/hello.ko
+ ou 
+Avec dépendance :
+sudo depmod -a
+modprobe hello
+
+Afficher les modules 
+lsmod | grep -i hello
+
+Afficher les logs :
+grep Hello /var/log/syslog
+>>
+Oct 18 06:32:01 metralserveur kernel: [ 2298.297777] [Hello world] - La fonction init_module() est appelée.
+ ```
+6. Utilisez la commande modinfo pour obtenir des informations sur le module hello.ko ; vous devriez notamment voir les informations figurant dans le fichier C.
+```bash
+modinfo hello
+
+>> 
+filename:       /lib/modules/5.4.0-88-generic/kernel/drivers/misc/hello.ko
+version:        Version 1.00
+description:    Module hello world
+author:         John Doe
+license:        GPL
+srcversion:     4398A2271F215E3A6F58078
+depends:
+retpoline:      Y
+name:           hello
+vermagic:       5.4.0-88-generic SMP mod_unload modversions
 ```
-make -C /lib/modules/4.15.0-159-generic/build M=/home/serveur/kernelProject modules
-make[1]: Entering directory '/usr/src/linux-headers-4.15.0-159-generic'
-  CC [M]  /home/serveur/kernelProject/hello.o
-/home/serveur/kernelProject/hello.c:4:16: error: expected declaration specifiers or ‘...’ before string constant
- MODULE_LICENCE("GPL");
-                ^~~~~
-scripts/Makefile.build:340: recipe for target '/home/serveur/kernelProject/hello.o' failed
-make[2]: *** [/home/serveur/kernelProject/hello.o] Error 1
-Makefile:1590: recipe for target '_module_/home/serveur/kernelProject' failed
-make[1]: *** [_module_/home/serveur/kernelProject] Error 2
-make[1]: Leaving directory '/usr/src/linux-headers-4.15.0-159-generic'
-Makefile:4: recipe for target 'all' failed
-make: *** [all] Error 2
-```
-
-5. Chargez le module; vérifiez dans le journal du noyau que le message “La fonction init_module() est
-appelée” a bien été inscrit, synonyme que le module a été chargé; confirmez avec la commande lsmod.
-
-6. Utilisez la commande modinfo pour obtenir des informations sur le module hello.ko ; vous devriez
-notamment voir les informations figurant dans le fichier C.
-
-7. Déchargez le module; vérifiez dans le journal du noyau que le message “La fonction cleanup_module()
-est appelée” a bien été inscrit, synonyme que le module a été déchargé; confirmez avec la commande
+7. Déchargez le module; vérifiez dans le journal du noyau que le message “La fonction cleanup_module() est appelée” a bien été inscrit, synonyme que le module a été déchargé; confirmez avec la commande
 lsmod.
+```bash
+sudo modprobe -r hello
+Afficher les logs :
+grep Hello /var/log/syslog
+>>
+Oct 18 06:35:13 metralserveur kernel: [ 2489.882876] [Hello world] - La fonction cleanup_module() est appelée.  
 
-8. Pour que le module soit chargé automatiquement au démarrage du système, il faut l’inscrire dans le
-fichier /etc/modules. Essayez, et vérifiez avec la commande lsmod après redémarrage de la machine.
-
+```
+8. Pour que le module soit chargé automatiquement au démarrage du système, il faut l’inscrire dans le fichier /etc/modules. Essayez, et vérifiez avec la commande lsmod après redémarrage de la machine.
+```bash 
+echo '
+hello
+' | sudo tee -a /etc/modules
+```
 ### Exercice 3. Interception de signaux
 La commande interne trap permet de redéfinir des gestionnaires pour les signaux reçus par un processus.
 Un cas d’utilisation typique est la suppression des fichiers temporaires créés par un script lorsque celui-ci est
 interrompu.
-1. Commencez par écrire un script qui recopie dans un fichier tmp.txt chaque ligne saisie au clavier par
-l’utilisateur
+1. Commencez par écrire un script qui recopie dans un fichier tmp.txt chaque ligne saisie au clavier par l’utilisateur
+```bash
+echo '
+#!/bin/bash
 
-2. Lancez votre script et appuyez sur CTRL+Z. Que se passe-t-il? Comment faire pour que le script pour-
-suive son exécution?
+while :; do
+    read var
+    echo $var >> tmp.txt
+done
+' > ~/scriptLogTMP.sh
+```
+2. Lancez votre script et appuyez sur CTRL+Z. Que se passe-t-il? Comment faire pour que le script poursuive son exécution?
+```bash
+./scriptLogTMP.sh 
+^Z
+[1]+  Stopped                 ./scriptLogTMP.sh
 
+Pour que le script se poursuive : 
+bg
+[1]+ ./scriptLogTMP.sh &
+```
 3. Toujours pendant l’exécution du script, appuyez sur CTRL+C. Que se passe-t-il?
+```bash 
+Il s'arrête totalement, son processus est terminé.
+```
 
 4. Modifiez votre script pour redéfinir les actions à effectuer quand le script reçoit les signaux SIGTSTP
 (= CTRL+Z) et SIGINT (= CTRL+C) : dans le premier cas, il doit aﬀicher “Impossible de me placer en
 arrière-plan”, et dans le second cas, il doit aﬀicher “OK, je fais un peu de ménage avant” avant de
 supprimer le fichier temporaire et terminer le script.
+```bash 
+trap 'echo "Impossible de me placer en arrière-plan"' SIGTSTP
+trap 'echo "OK, je fais un peu de ménage avant"; exit' SIGINT
+trap 'rm tmp.txt' EXIT
+```
+5. Testez le nouveau comportement de votre script en utilisant d’une part les raccourcis clavier, d’autre part la commande kill
+```bash
+ps -aux | grep scriptLogTMP 
+kill  2812
+```
 
-5. Testez le nouveau comportement de votre script en utilisant d’une part les raccourcis clavier, d’autre
-part la commande kill
+6. Relancez votre script et faites immédiatement un CTRL+C : vous obtenez un message d’erreur vous indiquant que le fichier tmp.txt n’existe pas. A l’aide de la commande interne test, corrigez votre script pour que ce message n’apparaisse plus.
 
-6. Relancez votre script et faites immédiatement un CTRL+C : vous obtenez un message d’erreur vous
-indiquant que le fichier tmp.txt n’existe pas. A l’aide de la commande interne test, corrigez votre
-script pour que ce message n’apparaisse plus.
+### Exercice 4. Surveillance de l’activité du système
+1. Lancez la commande htop, puis ouvrez un second terminal (avec Alt + F2, ou Alt + F3...) et tapez la commande w dans tty2. Qu’aﬀiche cette commande?
+```bash
+Il affiche toutes les sessions actives. 
+```
+2. Comment aﬀicher l’historique des dernières connexions à la machine?
+```bash
+last
+```
+3. Quelle commande permet d’obtenir la version du noyau?
+```bash
+uname -a
+```
+4. Comment récupérer toutes les informations sur le processeur, au format JSON?
+```bash
+lshw -class Processor -json
+```
+5. Comment obtenir la liste des derniers démarrages de la machine avec la commande journalctl ?
+Comment aﬀicher tout ce qu’il s’est passé sur la machine lors de l’avant-dernier boot?
+```bash
+journalctl --list-boots
+journalctl -b -1
+```
+6. Faites en sortes que lors d’une connexion à la machine, les utilisateurs soient prévenus par un message à l’écran d’une maintenance le 26 mars à minuit.
+```bash
+sudo sh -c 'echo "maintenance le 26 mars à minuit" > /etc/motd'
+```
+7. Ecrivez un script bash qui permet de calculer le k-ième nombre de Fibonacci : Fk= Fk−1 + Fk−2, avec F0 = F1 = 1. Lancez le calcul de F100 puis lancez la commande tload depuis un autre terminal virtuel. Que constatez-vous? Interrompez ensuite le calcul avec CTRL+C et observez la conséquence sur l’aﬀichage de tload.
+```bash
+echo '
+#!/bin/bash
+
+N=6
+nb1=0
+nb2=1
+
+read -p "Entre un nombre : " N
+
+for (( i=0; i<N; i++ ))
+do
+	echo -n "$nb1 "
+	fn=$((nb1 + nb2))
+	nb1=$nb2
+	nb2=$fn
+done
+' > fibonacci.sh
+
+La charge augmente ce qui se voit sur le graphique de générer par tload
+```
